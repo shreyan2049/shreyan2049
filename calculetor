@@ -1,0 +1,67 @@
+import tkinter as tk
+from tkinter import messagebox
+def click(event):
+    global expression
+    text = event.widget.cget("text")
+    if text == "=":
+        try:
+            result = eval(expression)
+            input_var.set(result)
+            expression = str(result)
+        except Exception as e:
+            messagebox.showerror("Error", "Invalid Expression")
+            expression = ""
+    elif text == "C":
+        expression = ""
+        input_var.set("")
+    else:
+        expression += text
+        input_var.set(expression)
+
+# Initialize the main application window
+root = tk.Tk()
+root.geometry("500x700")
+root.minsize(400, 600)
+root.maxsize(600, 800)
+root.title("Calculator")
+
+# Global variables
+expression = ""
+input_var = tk.StringVar()
+
+# Input field
+input_field = tk.Entry(root, textvar=input_var, font="Arial 20", justify="right")
+input_field.pack(fill=tk.BOTH, ipadx=8, pady=10, padx=10)
+
+# Button frame
+button_frame = tk.Frame(root)
+button_frame.pack()
+
+# Button layout with colors
+buttons = [
+    ("7", "lightblue"), ("8", "lightblue"), ("9", "lightblue"), ("/", "orange"),
+    ("4", "lightblue"), ("5", "lightblue"), ("6", "lightblue"), ("*", "orange"),
+    ("1", "lightblue"), ("2", "lightblue"), ("3", "lightblue"), ("-", "orange"),
+    ("C", "red"), ("0", "lightblue"), ("=", "green"), ("+", "orange"),
+]
+
+# Create buttons dynamically with colors
+for i, (button_text, color) in enumerate(buttons):
+    btn = tk.Button(button_frame, text=button_text, font="Arial 15", height=2, width=5, bg=color, fg="black")
+    btn.grid(row=i // 4, column=i % 4, padx=5, pady=5)
+    btn.bind("<Button-1>", click)
+
+# Quit button
+frame = tk.Frame(root)
+frame.pack()
+button = tk.Button(frame,
+                   text="Quit",
+                   fg="white",
+                   bg="red",
+                   font="calibri 15 italic",
+                   command=quit)
+button.pack(side=tk.LEFT)
+message=tk.Label(root,text="hopefully it would help you...",font="calibri 15 italic",bg="pink")
+message.pack(pady=20, padx=20,relief=tk.RAISED)
+
+root.mainloop()
